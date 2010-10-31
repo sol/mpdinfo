@@ -1,0 +1,21 @@
+name:           mpdinfo
+version:        0.0.0
+cabal-version:  >= 1.2
+build-type:     Simple
+
+executable mpdinfo
+  ghc-options:
+    -Wall
+    -threaded
+
+  build-depends:
+      base        == 4.*
+    , libmpd      == 0.4.*
+    , mtl         == 1.1.*
+    , IfElse      == 0.85.*
+
+  hs-source-dirs:
+    src
+
+  main-is:
+    Main.hs
