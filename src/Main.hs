@@ -1,5 +1,7 @@
 module Main where
 
+import qualified Data.Map as Map
+
 import Control.Monad.Trans (liftIO, MonadIO)
 
 import qualified Network.MPD as MPD
@@ -10,7 +12,7 @@ printPlaybackState :: PlaybackState -> IO ()
 printPlaybackState st = do
   putStrLn $ formatSong (currentSong st) ++ " " ++ (show $ elapsedTime st)
   where
-    formatSong (Just s) = MPD.sgTitle s
+    formatSong (Just s) = show $ Map.lookup MPD.Title $ MPD.sgTags s
     formatSong Nothing = "none"
 
 main :: IO ()

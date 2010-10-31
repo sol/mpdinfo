@@ -12,7 +12,7 @@ import Timer
 
 data PlaybackState = PlaybackState {
     playState   :: MPD.State
-  , elapsedTime :: (Seconds, Seconds)
+  , elapsedTime :: (Double, Seconds)
   , currentSong :: Maybe MPD.Song
 } deriving Show
 
@@ -30,17 +30,8 @@ onChange action = do
   -- wait for changes and put them into var
   forever $ do
     timer <- queryState var
-    doUntil (MPD.Player `elem`) MPD.idle
+    doUntil (MPD.PlayerS `elem`) MPD.idle
     for_ timer stopTimer
-
--- |
--- Execute given action repeatedly until its result satisfies given predicate.
-doUntil :: Monad m => (a -> Bool) -> m a -> m ()
-doUntil predicate action = do
-  r <- action
-  if predicate r
-    then return ()
-    else doUntil predicate action
 
 -- |
 -- Query the playback state and put the result into given MVar.  If a song is
@@ -67,9 +58,17 @@ queryState var = do
     else
       return Nothing
 
+-- Execute given action repeatedly until its result satisfies given predicate.
+doUntil :: Monad m => (a -> Bool) -> m a -> m ()
+doUntil predicate action = do
+  r <- action
+  if predicate r
+    then return ()
+    else doUntil predicate action
+
 -- |
 -- Increase elapsed time of given playback state by given seconds.
-updateElapsedTime :: PlaybackState -> Seconds -> PlaybackState
+updateElapsedTime :: PlaybackState -> Double -> PlaybackState
 updateElapsedTime state seconds = state {elapsedTime = (timeElapsed + seconds, timeTotal)}
   where
     (timeElapsed, timeTotal) = elapsedTime state
