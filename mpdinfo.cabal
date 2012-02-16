@@ -10,7 +10,7 @@ executable mpdinfo
 
   build-depends:
       base        == 4.*
-    , libmpd      == 0.6.*
+    , libmpd      >= 0.6 && < 0.8
     , containers  == 0.4.*
     , mtl         == 2.0.*
     , IfElse      == 0.85.*
