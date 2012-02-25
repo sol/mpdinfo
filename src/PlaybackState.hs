@@ -30,7 +30,7 @@ onChange action = do
   -- wait for changes and put them into var
   forever $ do
     timer <- queryState var
-    doUntil (MPD.PlayerS `elem`) MPD.idle
+    _ <- MPD.idle [MPD.PlayerS]
     for_ timer stopTimer
 
 -- |
@@ -57,14 +57,6 @@ queryState var = do
       return $ Just timer
     else
       return Nothing
-
--- Execute given action repeatedly until its result satisfies given predicate.
-doUntil :: Monad m => (a -> Bool) -> m a -> m ()
-doUntil predicate action = do
-  r <- action
-  if predicate r
-    then return ()
-    else doUntil predicate action
 
 -- |
 -- Increase elapsed time of given playback state by given seconds.
