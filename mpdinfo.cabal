@@ -10,9 +10,9 @@ executable mpdinfo
 
   build-depends:
       base        == 4.*
-    , libmpd      == 0.8.*
+    , libmpd      >= 0.8 && < 1.0
     , containers  == 0.4.*
-    , mtl         == 2.0.*
+    , mtl         >= 2 && < 2.2
     , IfElse      == 0.85.*
 
   hs-source-dirs:
